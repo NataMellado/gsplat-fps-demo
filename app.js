@@ -98,37 +98,47 @@ const euler = new THREE.Euler(0, 0, 0, 'YXZ');
 euler.y = 1;
 camera.quaternion.setFromEuler(euler);
 
+const FRICTION = 10.0;
+const ACCELERATION = 40.0;
+const DEADZONE = 0.001;
+
 function animate() {
     requestAnimationFrame(animate);
-    const delta = clock.getDelta();
+    let delta = clock.getDelta();
+    if (delta > 0.1) delta = 0.1;
 
     // Rotación con joystick derecho
-    if (Math.abs(lookJoystick.x) > 0.1 || Math.abs(lookJoystick.y) > 0.1) {
+    if (Math.abs(lookJoystick.x) > 0.05 || Math.abs(lookJoystick.y) > 0.05) {
         euler.setFromQuaternion(camera.quaternion);
-        euler.y -= lookJoystick.x * 0.05;
-        euler.x += lookJoystick.y * 0.05;
+        euler.y -= lookJoystick.x * 3 * delta;
+        euler.x += lookJoystick.y * 3 * delta;
         euler.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, euler.x));
         camera.quaternion.setFromEuler(euler);
     }
 
     // Movimiento
-    velocity.x -= velocity.x * 10 * delta;
-    velocity.z -= velocity.z * 10 * delta;
+    velocity.x -= velocity.x * FRICTION * delta;
+    velocity.z -= velocity.z * FRICTION * delta;
+
+    if (Math.abs(velocity.x) < DEADZONE) velocity.x = 0;
+    if (Math.abs(velocity.z) < DEADZONE) velocity.z = 0;
 
     direction.z = Number(moveForward) - Number(moveBackward);
     direction.x = Number(moveRight) - Number(moveLeft);
     direction.normalize();
 
-    if (moveForward || moveBackward) velocity.z -= direction.z * 15.0 * delta;
-    if (moveLeft || moveRight) velocity.x -= direction.x * 15.0 * delta;
+    if (moveForward || moveBackward) velocity.z -= direction.z * ACCELERATION * delta;
+    if (moveLeft || moveRight) velocity.x -= direction.x * ACCELERATION * delta;
 
     const camDir = new THREE.Vector3();
     camera.getWorldDirection(camDir);
-    camDir.y = 0; camDir.normalize();
+    camDir.y = 0; 
+    camDir.normalize();
+    
     const camSide = new THREE.Vector3().crossVectors(camera.up, camDir).normalize();
 
-    camera.position.addScaledVector(camDir, -velocity.z * delta * 0.1);
-    camera.position.addScaledVector(camSide, velocity.x * delta * 0.1);
+    camera.position.addScaledVector(camDir, -velocity.z * delta);
+    camera.position.addScaledVector(camSide, velocity.x * delta);
 
     camera.position.y = floorMesh.position.y + 1.58;
 
