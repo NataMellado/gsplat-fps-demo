@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <style> 
+        body { margin: 0; overflow: hidden; background-color: #000; font-family: sans-serif; touch-action: none; } 
+        #instrucciones {
+            position: absolute; top: 10%; left: 50%; transform: translate(-50%, -50%);
+            color: white; text-align: center; background: rgba(0,0,0,0.5); padding: 15px;
+            pointer-events: none; border-radius: 10px; z-index: 10;
+        }
+        /* Contenedores de los Joysticks */
+        #joystick-left { position: absolute; bottom: 50px; left: 50px; width: 120px; height: 120px; z-index: 20; }
+        #joystick-right { position: absolute; bottom: 50px; right: 50px; width: 120px; height: 120px; z-index: 20; }
+    </style>
+</head>
+
+<body>
+<div id="instrucciones">PC: Clic para iniciar<br>Móvil: Usa los Joysticks</div>
+<div id="joystick-left"></div>
+<div id="joystick-right"></div>
+
+<!-- Joysticks -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/nipplejs/0.10.1/nipplejs.min.js"></script>
+
+<!-- Importmap -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.170.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.170.0/examples/jsm/",
+    "@sparkjsdev/spark": "https://sparkjs.dev/releases/spark/0.1.10/spark.module.js"
+  }
+}
+</script>
+
+
+<script type="module" src="app.js"></script>
+
+</body>
+</html>
