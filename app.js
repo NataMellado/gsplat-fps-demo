@@ -98,8 +98,9 @@ const euler = new THREE.Euler(0, 0, 0, 'YXZ');
 euler.y = 1;
 camera.quaternion.setFromEuler(euler);
 
-const FRICTION = 10.0;
-const ACCELERATION = 40.0;
+const FRICTION = 5.0;
+const ACCELERATION = 1;
+const MAX_SPEED = 0.4;
 const DEADZONE = 0.001;
 
 function animate() {
@@ -129,6 +130,10 @@ function animate() {
 
     if (moveForward || moveBackward) velocity.z -= direction.z * ACCELERATION * delta;
     if (moveLeft || moveRight) velocity.x -= direction.x * ACCELERATION * delta;
+
+    if (velocity.length() > MAX_SPEED) {
+        velocity.setLength(MAX_SPEED);
+    }
 
     const camDir = new THREE.Vector3();
     camera.getWorldDirection(camDir);
