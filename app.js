@@ -20,7 +20,7 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 document.body.appendChild(renderer.domElement);
 
-const splatURL = "splat_980k_cubo.splat";
+const splatURL = "splat_3m_w-light_v3.splat";
 const miSplat = new SplatMesh({ url: splatURL });
 miSplat.rotation.z = Math.PI;
 scene.add(miSplat);
