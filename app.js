@@ -6,7 +6,7 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
   60,
   window.innerWidth / window.innerHeight,
-  0.1,
+  0.01,
   1000,
 );
 camera.position.set(0.6, 0, 0.6);
@@ -20,7 +20,7 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 document.body.appendChild(renderer.domElement);
 
-const splatURL = "splat_3m_w-light_v3.splat";
+const splatURL = "H. splat_3.08m_w-light_v5.splat";
 const miSplat = new SplatMesh({ url: splatURL });
 miSplat.rotation.z = Math.PI;
 scene.add(miSplat);
